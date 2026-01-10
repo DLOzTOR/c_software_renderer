@@ -1,13 +1,25 @@
-void DrawLine(Vec2i start, Vec2i end, int color)
+#include <stdlib.c>
+#include "math.h"
+#include "utils.h"
+
+
+typedef struct {
+    int* data;
+    int width;
+    int heidth;
+} render_target;
+
+
+void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
 {
-    int d_x = end.X - start.X;
-    int d_y = end.Y - start.Y;
-    if (Math.Abs(d_y) < Math.Abs(d_x)) {
-        if (d_x < 0) {
-            (start, end) = (end, start);
+    int d_x = end->X - start->X;
+    int d_y = end->Y - start->Y;
+    if (d_x < 0) {
+        if (abs(d_y) < abs(d_x)) {
+			swap(start, end);
             d_x = end.X - start.X;
         }
-        d_y = Math.Abs(end.Y - start.Y);
+        d_y = abs(end.Y - start.Y);
         int err = 0;
         int delta_err = 2 * d_y;
         int step = end.Y > start.Y ? 1 : -1;
@@ -24,6 +36,7 @@ void DrawLine(Vec2i start, Vec2i end, int color)
     }
     else {
         if (d_y < 0) {
+        	swap((void**)&start, (void**)&end);
             (start, end) = (end, start);
             d_y = end.Y - start.Y;
         }
