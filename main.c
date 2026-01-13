@@ -2,12 +2,12 @@
 #include "math.h"
 #define UTILS_IMPLEMENTATION
 #include "utils.h"
+#include "color.h"
 
 int main() {
-	vec2i* posA = &(vec2i){15, 15};
-	vec2i* posB = &(vec2i){10, 10};
-	swap_p(posA, posB);
-    printf("Vector2Int:(%d; %d)\n", posA->X, posA->Y);
-    printf("Vector2Int:(%d; %d)\n", posB->X, posB->Y);
-    return 0;
+	int color = create_color(0xAB, 0xCD, 0xEF);
+	printf("%X\n", get_red(color));
+	printf("%X\n", get_green(color));
+	printf("%X\n", get_blue(color));
+	printf("%X\n", color); 
 }

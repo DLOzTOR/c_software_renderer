@@ -1,7 +1,8 @@
+#pragma once
 #include <stdlib.c>
+
 #include "math.h"
 #include "utils.h"
-
 
 typedef struct {
     int* data;
@@ -9,14 +10,13 @@ typedef struct {
     int heidth;
 } render_target;
 
-
 void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
 {
     int d_x = end->X - start->X;
     int d_y = end->Y - start->Y;
     if (d_x < 0) {
         if (abs(d_y) < abs(d_x)) {
-			swap(start, end);
+            swap(start, end);
             d_x = end.X - start.X;
         }
         d_y = abs(end.Y - start.Y);
@@ -36,7 +36,7 @@ void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
     }
     else {
         if (d_y < 0) {
-        	swap((void**)&start, (void**)&end);
+            swap((void**)&start, (void**)&end);
             (start, end) = (end, start);
             d_y = end.Y - start.Y;
         }
