@@ -1,8 +1,8 @@
 #pragma once
 #include <stdlib.c>
 
-#include "math.h"
-#include "utils.h"
+#include "../math/math.h"
+#include "../unility/utils.h"
 
 typedef struct {
     int* data;

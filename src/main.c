@@ -1,8 +1,8 @@
 #include <stdio.h>
-#include "math.h"
+#include "math/math.h"
 #define UTILS_IMPLEMENTATION
-#include "utils.h"
-#include "color.h"
+#include "utility/utils.h"
+#include "render/color.h"
 
 int main() {
 	int color = create_color(0xAB, 0xCD, 0xEF);
