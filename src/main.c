@@ -1,6 +1,4 @@
 #include "math/math.h"
-#define UTILS_IMPLEMENTATION
-#include "utility/utils.h"
 #include "io/tga_image.h"
 #include "render/renderer.h"
 
