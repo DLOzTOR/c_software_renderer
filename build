@@ -1,7 +1,0 @@
-BUILD_DEST="./out/a"
-if gcc src/main.c -o "$BUILD_DEST"; then
-	echo "Build succes"
-else
-	echo "Build failed"
-	exit 1
-fi
