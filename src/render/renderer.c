@@ -57,3 +57,24 @@ void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
         }
     }
 }
+
+void draw_wired_face(vec3f* v1, vec3f* v2, vec3f* v3, render_target* target, int color) {
+    vec2i vi1 = vec3f_to_screen(*v1, target->width, target->height);
+    vec2i vi2 = vec3f_to_screen(*v2, target->width, target->height);
+    vec2i vi3 = vec3f_to_screen(*v3, target->width, target->height);
+    draw_line(&vi1, &vi2, target, color);
+    draw_line(&vi1, &vi3, target, color);
+    draw_line(&vi2, &vi3, target, color);
+}
+
+void draw_wired_model(model* _model, render_target* target, int color) {
+    for (int i = 0; i < _model->length; i+=3) {
+        draw_wired_face(
+            &_model->tris[i],
+            &_model->tris[i + 1],
+            &_model->tris[i + 2],
+            target,
+            color
+            );
+    }
+}

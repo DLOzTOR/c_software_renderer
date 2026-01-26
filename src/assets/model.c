@@ -44,6 +44,8 @@ model* load_model_obj(const char* path) {
             faces_readed++;
         }
     }
+    printf("%d", vertices_count);
+    printf("%d", faces_count);
     fclose(_file);
     free(vertices);
     return loaded_model;

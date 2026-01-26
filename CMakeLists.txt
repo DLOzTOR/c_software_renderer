@@ -7,6 +7,7 @@ file(GLOB SOURCES
         "./src/main.c"
         "./src/assets/*.c"
         "./src/io/*.c"
+        "./src/math/*.c"
         "./src/render/*.c"
         "./src/utility/*.c"
 )
