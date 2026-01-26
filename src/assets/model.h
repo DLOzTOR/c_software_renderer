@@ -7,3 +7,4 @@ typedef struct {
 } model;
 
 void free_model(model* _model);
+model* load_model_obj(const char* path);
