@@ -1,10 +1,23 @@
 cmake_minimum_required(VERSION 3.20)
-project(engine C)
+project(c_software_renderer C)
 
 set(CMAKE_C_STANDARD 11)
 
-file(GLOB_RECURSE SOURCES "*.c" "*.h")
+file(GLOB SOURCES
+        "./src/main.c"
+        "./src/assets/*.c"
+        "./src/io/*.c"
+        "./src/render/*.c"
+        "./src/utility/*.c"
+)
 
-add_executable(engine ${SOURCES})
+include_directories(
+        src
+        src/assets
+        src/io
+        src/math
+        src/render
+        src/utility
+)
 
-include_directories(.)
+add_executable(c_software_renderer ${SOURCES})
