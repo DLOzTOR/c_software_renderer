@@ -3,6 +3,8 @@ project(c_software_renderer C)
 
 set(CMAKE_C_STANDARD 11)
 
+file(COPY ${CMAKE_CURRENT_SOURCE_ID}assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
+
 file(GLOB SOURCES
         "./src/main.c"
         "./src/assets/*.c"

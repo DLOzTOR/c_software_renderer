@@ -1,22 +1,25 @@
 #include "renderer.h"
+
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+
 #include "../utility/utils.h"
 
-render_target* create_render_target(uint16_t width, uint16_t height){
-    render_target* target = malloc(sizeof(render_target));
-    if(!target)return 0;
+render_target *create_render_target(uint16_t width, uint16_t height) {
+    render_target *target = malloc(sizeof(render_target));
+    if (!target)return 0;
     target->data = calloc(width * height, 4);
     target->width = width;
     target->height = height;
     return target;
 }
 
-void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
-{
+void draw_line(vec2i *start, vec2i *end, render_target *target, int color) {
     int d_x = end->x - start->x;
     int d_y = end->y - start->y;
-    if (d_x < 0) {
-        if (abs(d_y) < abs(d_x)) {
+    if (abs(abs(d_y) < abs(d_x))) {
+        if (d_x < 0) {
             swap_p(start, end);
             d_x = end->x - start->x;
         }
@@ -34,8 +37,7 @@ void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
                 err -= d_x * 2;
             }
         }
-    }
-    else {
+    } else {
         if (d_y < 0) {
             swap_p(start, end);
             d_y = end->y - start->y;
@@ -58,23 +60,33 @@ void draw_line(vec2i* start, vec2i* end, render_target* target, int color)
     }
 }
 
-void draw_wired_face(vec3f* v1, vec3f* v2, vec3f* v3, render_target* target, int color) {
-    vec2i vi1 = vec3f_to_screen(*v1, target->width, target->height);
-    vec2i vi2 = vec3f_to_screen(*v2, target->width, target->height);
-    vec2i vi3 = vec3f_to_screen(*v3, target->width, target->height);
+void draw_wired_face(vec3f *v1, vec3f *v2, vec3f *v3, render_target *target, int color) {
+    vec2i vi1 = vec2i_screen_normalize(vec3f_to_screen(*v1, target->width, target->height), target->width,
+                                       target->height);
+    vec2i vi2 = vec2i_screen_normalize(vec3f_to_screen(*v2, target->width, target->height), target->width,
+                                       target->height);
+    vec2i vi3 = vec2i_screen_normalize(vec3f_to_screen(*v3, target->width, target->height), target->width,
+                                       target->height);
     draw_line(&vi1, &vi2, target, color);
     draw_line(&vi1, &vi3, target, color);
     draw_line(&vi2, &vi3, target, color);
 }
 
-void draw_wired_model(model* _model, render_target* target, int color) {
-    for (int i = 0; i < _model->length; i+=3) {
+void draw_wired_model(model *_model, render_target *target, int color) {
+    int faces = 0;
+    for (int i = 0; i < _model->length; i += 3) {
+        faces++;
         draw_wired_face(
             &_model->tris[i],
             &_model->tris[i + 1],
             &_model->tris[i + 2],
             target,
             color
-            );
+        );
     }
+    printf("%d\n", faces);
+}
+
+void reset_target(render_target *target) {
+    memset(target->data, 0, target->height * target->width * sizeof(*target->data));
 }
