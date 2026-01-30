@@ -15,7 +15,7 @@ typedef struct {
 	float z;
 } vec3f;
 
-vec2i vec3f_to_screen(vec3f v, uint16_t width, uint16_t height);
+vec2i vec3f_to_screen(vec3f v, uint16_t width, uint16_t height, float aspect);
 
 vec2i vec2i_screen_normalize(vec2i v, uint16_t width, uint16_t height);
 

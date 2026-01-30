@@ -67,9 +67,9 @@ bool trim_line_to_screen(vec2i* p1, vec2i* p2, uint16_t width, uint16_t height){
 
 //Vectors
 
-vec2i vec3f_to_screen(vec3f v, uint16_t width, uint16_t height) {
+vec2i vec3f_to_screen(vec3f v, uint16_t width, uint16_t height, float aspect) {
     return (vec2i){
-        (int32_t)((float)width * v.x + (float) width) / 2,
+        (int32_t)((float)width * v.x / aspect + (float) width) / 2,
         (int32_t)((float)height * v.y + (float) height) / 2
     };
 }

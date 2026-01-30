@@ -7,6 +7,7 @@ typedef struct {
     uint32_t* data;
     uint16_t width;
     uint16_t height;
+    float aspect;
 } render_target;
 
 render_target* create_render_target(uint16_t width, uint16_t height);

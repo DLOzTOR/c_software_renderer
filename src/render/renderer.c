@@ -14,6 +14,7 @@ render_target *create_render_target(uint16_t width, uint16_t height) {
     target->data = calloc(width * height, 4);
     target->width = width;
     target->height = height;
+    target->aspect = (float)width/(float)height;
     return target;
 }
 
@@ -69,9 +70,9 @@ void draw_line(vec2i *start, vec2i *end, render_target *target, int32_t color) {
 }
 
 void draw_wired_face(vec3f v1, vec3f v2, vec3f v3, render_target *target, int32_t color) {
-    vec2i vi1 = vec3f_to_screen(v1, target->width, target->height);
-    vec2i vi2 = vec3f_to_screen(v2, target->width, target->height);
-    vec2i vi3 = vec3f_to_screen(v3, target->width, target->height);
+    vec2i vi1 = vec3f_to_screen(v1, target->width, target->height, target->aspect);
+    vec2i vi2 = vec3f_to_screen(v2, target->width, target->height, target->aspect);
+    vec2i vi3 = vec3f_to_screen(v3, target->width, target->height, target->aspect);
     vec2i p1 = vi1;
     vec2i p2 = vi2;
     if (trim_line_to_screen(&p1, &p2, target->width, target->height)) {
