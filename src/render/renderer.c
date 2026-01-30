@@ -61,15 +61,21 @@ void draw_line(vec2i *start, vec2i *end, render_target *target, int color) {
 }
 
 void draw_wired_face(vec3f *v1, vec3f *v2, vec3f *v3, render_target *target, int color) {
-    vec2i vi1 = vec2i_screen_normalize(vec3f_to_screen(*v1, target->width, target->height), target->width,
-                                       target->height);
-    vec2i vi2 = vec2i_screen_normalize(vec3f_to_screen(*v2, target->width, target->height), target->width,
-                                       target->height);
-    vec2i vi3 = vec2i_screen_normalize(vec3f_to_screen(*v3, target->width, target->height), target->width,
-                                       target->height);
-    draw_line(&vi1, &vi2, target, color);
-    draw_line(&vi1, &vi3, target, color);
-    draw_line(&vi2, &vi3, target, color);
+    vec2i vi1 = vec3f_to_screen(*v1, target->width, target->height);
+    vec2i vi2 = vec3f_to_screen(*v2, target->width, target->height);
+    vec2i vi3 = vec3f_to_screen(*v3, target->width, target->height);
+    vec2i p1 = vi1;
+    vec2i p2 = vi2;
+    trim_line_to_screen(&p1, &p2, target->width, target->height);
+    draw_line(&p1, &p2, target, color);
+    p1 = vi1;
+    p2 = vi3;
+    trim_line_to_screen(&p1, &p2, target->width, target->height);
+    draw_line(&p1, &p2, target, color);
+    p1 = vi2;
+    p2 = vi3;
+    trim_line_to_screen(&p1, &p2, target->width, target->height);
+    draw_line(&p1, &p2, target, color);
 }
 
 void draw_wired_model(model *_model, render_target *target, int color) {
