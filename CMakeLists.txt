@@ -12,6 +12,7 @@ file(GLOB SOURCES
         "./src/math/*.c"
         "./src/render/*.c"
         "./src/utility/*.c"
+        "./src/core/*.c"
 )
 
 include_directories(
@@ -21,6 +22,7 @@ include_directories(
         src/math
         src/render
         src/utility
+        src/core
 )
 
 add_executable(c_software_renderer ${SOURCES})

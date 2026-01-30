@@ -25,7 +25,6 @@ model* load_model_obj(const char* path) {
     rewind(_file);
     model* loaded_model = malloc(sizeof(model));
     loaded_model->tris = calloc(faces_count * 3, sizeof(vec3f));
-    printf("%p\n", loaded_model->tris);
     loaded_model->length = faces_count * 3;
     vec3f* vertices = calloc(vertices_count, sizeof(vec3f));
     int vertices_readed = 0;
@@ -45,9 +44,6 @@ model* load_model_obj(const char* path) {
             faces_readed++;
         }
     }
-    printf("%d\n", vertices_count);
-    printf("%d\n", faces_count);
-    printf("%d\n", loaded_model->length);
     fclose(_file);
     free(vertices);
     return loaded_model;

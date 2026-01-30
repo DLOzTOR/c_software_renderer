@@ -6,6 +6,8 @@
 
 #include "../utility/utils.h"
 
+//Render target
+
 render_target *create_render_target(uint16_t width, uint16_t height) {
     render_target *target = malloc(sizeof(render_target));
     if (!target)return 0;
@@ -15,7 +17,13 @@ render_target *create_render_target(uint16_t width, uint16_t height) {
     return target;
 }
 
-void draw_line(vec2i *start, vec2i *end, render_target *target, int color) {
+void reset_target(render_target *target) {
+    memset(target->data, 0, target->height * target->width * sizeof(*target->data));
+}
+
+//Render
+
+void draw_line(vec2i *start, vec2i *end, render_target *target, int32_t color) {
     int d_x = end->x - start->x;
     int d_y = end->y - start->y;
     if (abs(abs(d_y) < abs(d_x))) {
@@ -60,10 +68,10 @@ void draw_line(vec2i *start, vec2i *end, render_target *target, int color) {
     }
 }
 
-void draw_wired_face(vec3f *v1, vec3f *v2, vec3f *v3, render_target *target, int color) {
-    vec2i vi1 = vec3f_to_screen(*v1, target->width, target->height);
-    vec2i vi2 = vec3f_to_screen(*v2, target->width, target->height);
-    vec2i vi3 = vec3f_to_screen(*v3, target->width, target->height);
+void draw_wired_face(vec3f v1, vec3f v2, vec3f v3, render_target *target, int32_t color) {
+    vec2i vi1 = vec3f_to_screen(v1, target->width, target->height);
+    vec2i vi2 = vec3f_to_screen(v2, target->width, target->height);
+    vec2i vi3 = vec3f_to_screen(v3, target->width, target->height);
     vec2i p1 = vi1;
     vec2i p2 = vi2;
     if (trim_line_to_screen(&p1, &p2, target->width, target->height)) {
@@ -81,21 +89,19 @@ void draw_wired_face(vec3f *v1, vec3f *v2, vec3f *v3, render_target *target, int
     }
 }
 
-void draw_wired_model(model *_model, render_target *target, int color) {
-    int faces = 0;
+void draw_wired_model(model *_model, transform* _transform, render_target *target, int32_t color) {
     for (int i = 0; i < _model->length; i += 3) {
-        faces++;
         draw_wired_face(
-            &_model->tris[i],
-            &_model->tris[i + 1],
-            &_model->tris[i + 2],
+            apply_transform(_model->tris[i], *_transform),
+            apply_transform(_model->tris[i + 1], *_transform),
+            apply_transform(_model->tris[i + 2], *_transform),
             target,
             color
         );
     }
-    printf("%d\n", faces);
 }
 
-void reset_target(render_target *target) {
-    memset(target->data, 0, target->height * target->width * sizeof(*target->data));
+void draw_entity(entity* _entity, render_target* target, int32_t color) {
+    draw_wired_model(_entity->_model, &_entity->_transform, target, color);
 }
+

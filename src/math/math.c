@@ -1,6 +1,8 @@
 #include "math.h"
 #include <stdlib.h>
 
+//Cohen–Sutherland
+
 const uint8_t INSIDE = 0b0000;
 const uint8_t LEFT   = 0b0001;
 const uint8_t RIGHT  = 0b0010;
@@ -63,6 +65,8 @@ bool trim_line_to_screen(vec2i* p1, vec2i* p2, uint16_t width, uint16_t height){
     }
 }
 
+//Vectors
+
 vec2i vec3f_to_screen(vec3f v, uint16_t width, uint16_t height) {
     return (vec2i){
         (int32_t)((float)width * v.x + (float) width) / 2,
@@ -77,3 +81,19 @@ vec2i vec2i_screen_normalize(vec2i v, uint16_t width, uint16_t height) {
     };
 }
 
+//Transform
+
+transform transform_identity(void) {
+    return (transform){
+        {1, 1, 1},
+        {0, 0, 0}
+    };
+}
+
+vec3f apply_transform(vec3f point, transform _transform) {
+    return (vec3f){
+        point.x * _transform.scale.x + _transform.translate.x,
+        point.y * _transform.scale.y + _transform.translate.y,
+        point.y * _transform.scale.y + _transform.translate.y
+    };
+}
