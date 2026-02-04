@@ -15,7 +15,7 @@ int main() {
 	// 		draw_entity(&monke, t, 0xFFFFFF);
 	// 	}
 	// }
-	draw_entity(&monke, t, 0xFFFFFF);
+	draw_entity(&monke, t, 0xFFFFFFFF);
 	free_model(monke._model);
 	monke._model = (void*)0;
 	write_tga("out.tga", t->data, t->width, t->height);

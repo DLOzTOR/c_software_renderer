@@ -6,7 +6,6 @@ set(CMAKE_C_STANDARD 11)
 file(COPY ${CMAKE_CURRENT_SOURCE_ID}assets DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 
 file(GLOB SOURCES
-        "./src/main.c"
         "./src/assets/*.c"
         "./src/io/*.c"
         "./src/math/*.c"
@@ -25,4 +24,17 @@ include_directories(
         src/core
 )
 
-add_executable(c_software_renderer ${SOURCES})
+add_executable(c_software_renderer ./src/main.c ${SOURCES})
+
+add_executable(raylib_window ./src/raylib_window.c ${SOURCES})
+
+set(RAYLIB_INCLUDE_DIR "${CMAKE_SOURCE_DIR}/external/raylib-5.5/include")
+set(RAYLIB_LIBRARY "${CMAKE_SOURCE_DIR}/external/raylib-5.5/lib/libraylib.a")
+
+target_link_libraries(raylib_window PRIVATE ${RAYLIB_LIBRARY})
+target_include_directories(raylib_window PRIVATE ${RAYLIB_INCLUDE_DIR})
+
+if(UNIX)
+    target_link_libraries(raylib_window PRIVATE m pthread dl rt)
+endif()
+

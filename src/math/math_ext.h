@@ -2,6 +2,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+
 //Vectors
 
 typedef struct{
@@ -27,11 +28,29 @@ typedef struct {
 	float data[16];
 } mat4x4;
 
+mat4x4 mat4x4_identity();
+
+mat4x4 mat4x4_mult(mat4x4 a, mat4x4 b);
+
+//Quaternion
+
+typedef struct {
+	float w;
+	float x;
+	float y;
+	float z;
+} quaternion;
+
+quaternion quaternion_from_axis_angle(vec3f axis, float angle);
+
+quaternion quaternion_from_euler(vec3f rotation);
+
 //Transform
 
 typedef struct {
 	vec3f scale;
 	vec3f translate;
+	quaternion rotation;
 } transform;
 
 transform transform_identity(void);

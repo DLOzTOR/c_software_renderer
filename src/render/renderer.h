@@ -1,6 +1,6 @@
 #pragma once
 #include "../assets/model.h"
-#include "../math/math.h"
+#include "../math/math_ext.h"
 #include  "../core/entity.h"
 
 typedef struct {

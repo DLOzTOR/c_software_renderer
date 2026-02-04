@@ -1,5 +1,5 @@
 #pragma once
-#include "../math/math.h"
+#include "../math/math_ext.h"
 
 typedef struct {
     vec3f* tris;
