@@ -27,7 +27,7 @@ void reset_target(render_target *target) {
 void draw_line(vec2i *start, vec2i *end, render_target *target, int32_t color) {
     int d_x = end->x - start->x;
     int d_y = end->y - start->y;
-    if (abs(abs(d_y) < abs(d_x))) {
+    if (abs(d_y) < abs(d_x)) {
         if (d_x < 0) {
             swap_p(start, end);
             d_x = end->x - start->x;
@@ -91,11 +91,12 @@ void draw_wired_face(vec3f v1, vec3f v2, vec3f v3, render_target *target, int32_
 }
 
 void draw_wired_model(model *_model, transform* _transform, render_target *target, int32_t color) {
+    quaternion _conjugate = quaternion_conjugate(_transform->rotation);
     for (int i = 0; i < _model->length; i += 3) {
         draw_wired_face(
-            apply_transform(_model->tris[i], *_transform),
-            apply_transform(_model->tris[i + 1], *_transform),
-            apply_transform(_model->tris[i + 2], *_transform),
+            apply_transform(_model->tris[i], *_transform, _conjugate),
+            apply_transform(_model->tris[i + 1], *_transform, _conjugate),
+            apply_transform(_model->tris[i + 2], *_transform, _conjugate),
             target,
             color
         );

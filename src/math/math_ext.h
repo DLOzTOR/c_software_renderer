@@ -41,9 +41,15 @@ typedef struct {
 	float z;
 } quaternion;
 
+quaternion quaternion_conjugate(quaternion a);
+
+quaternion quaternion_multiply(quaternion a, quaternion b);
+
 quaternion quaternion_from_axis_angle(vec3f axis, float angle);
 
 quaternion quaternion_from_euler(vec3f rotation);
+
+vec3f vec3f_apply_rotation(vec3f v, quaternion a, quaternion a_conjugate);
 
 //Transform
 
@@ -55,4 +61,4 @@ typedef struct {
 
 transform transform_identity(void);
 
-vec3f apply_transform(vec3f point, transform _transform);
+vec3f apply_transform(vec3f point, transform _transform, quaternion rot_conjugate);

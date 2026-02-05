@@ -107,9 +107,67 @@ mat4x4 mat4x4_mult(mat4x4 a, mat4x4 b) {
 
 //Quaternion
 
+const vec3f OX = {1, 0,0};
+const vec3f OY = {0, 1,0};
+const vec3f OZ = {0, 0,1};
+
+quaternion quaternion_conjugate(quaternion a) {
+    return (quaternion){
+        .w = a.w,
+        .x = -a.x,
+        .y = -a.y,
+        .z = -a.z
+    };
+}
+
+quaternion quaternion_normalize(quaternion a) {
+    float len = sqrtf(a.w*a.w + a.x*a.x + a.y*a.y + a.z*a.z);
+    if (len < 1e-6) {
+        return (quaternion){1.0f, 0.0f, 0.0f, 0.0f};;
+    }
+    float inv_len = 1.0f / len;
+    a.w *= inv_len;
+    a.x *= inv_len;
+    a.y *= inv_len;
+    a.z *= inv_len;
+    return a;
+}
+
+quaternion quaternion_multiply(quaternion a, quaternion b) {
+    return (quaternion){
+        .w = a.w * b.w - a.x * b.x - a.y * b.y - a.z * b.z,
+        .x = a.x * b.w + a.w * b.x + a.y * b.z - a.z * b.y,
+        .y = a.w * b.y + a.y * b.w - a.x * b.z + a.z * b.x,
+        .z = a.w * b.z + a.z * b.w + a.x * b.y - a.y * b.x
+    };
+}
+
 quaternion quaternion_from_axis_angle(vec3f axis, float angle) {
     float half_angle = angle * 0.5f;
     float s = sin(half_angle);
+    return (quaternion){
+        .w = cos(half_angle),
+        .x = s * axis.x,
+        .y = s * axis.y,
+        .z = s * axis.z
+    };
+}
+
+quaternion quaternion_from_euler(vec3f rotation) {
+    quaternion x = quaternion_from_axis_angle(OX, rotation.x);
+    quaternion y = quaternion_from_axis_angle(OY, rotation.y);
+    quaternion z = quaternion_from_axis_angle(OZ, rotation.z);
+    return quaternion_normalize(quaternion_multiply(quaternion_multiply(y, x), z));
+}
+
+vec3f vec3f_apply_rotation(vec3f v, quaternion a, quaternion a_conjugate) {
+    quaternion v_q = {0, v.x, v.y, v.z};
+    quaternion result = quaternion_multiply(quaternion_multiply(a,v_q), a_conjugate);
+    return (vec3f){
+        result.x,
+        result.y,
+        result.z
+    };
 }
 
 //Transform
@@ -118,14 +176,20 @@ transform transform_identity(void) {
     return (transform){
         {1, 1, 1},
         {0, 0, 0},
-        {0, 0, 0, 0}
+        {1, 0, 0, 0}
     };
 }
 
-vec3f apply_transform(vec3f point, transform _transform) {
+vec3f apply_transform(vec3f point, transform _transform, quaternion rot_conjugate) {
+    vec3f transformed = {
+        point.x * _transform.scale.x,
+        point.y * _transform.scale.y,
+        point.z * _transform.scale.z
+    };
+    transformed = vec3f_apply_rotation(transformed, _transform.rotation,rot_conjugate);
     return (vec3f){
-        point.x * _transform.scale.x + _transform.translate.x,
-        point.y * _transform.scale.y + _transform.translate.y,
-        point.y * _transform.scale.y + _transform.translate.y
+        transformed.x + _transform.translate.x,
+        transformed.y + _transform.translate.y,
+        transformed.z + _transform.translate.z
     };
 }
