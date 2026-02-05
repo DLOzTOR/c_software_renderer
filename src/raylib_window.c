@@ -47,7 +47,7 @@ int main(void)
         printf("%f\n", GetFrameTime());
         monke._transform.translate.x += speed * GetFrameTime();
         ang += abs(speed) * GetFrameTime();
-        monke._transform.rotation = quaternion_from_euler((vec3f){ang, ang, 0});
+        monke._transform.rotation = quaternion_from_euler((vec3f){ang, 0, 0});
         if (fabs(monke._transform.translate.x) > 0.5) {
             speed *=-1;
         }

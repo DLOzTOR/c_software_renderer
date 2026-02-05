@@ -154,8 +154,8 @@ quaternion quaternion_from_axis_angle(vec3f axis, float angle) {
 }
 
 quaternion quaternion_from_euler(vec3f rotation) {
-    quaternion x = quaternion_from_axis_angle(OX, rotation.x);
-    quaternion y = quaternion_from_axis_angle(OY, rotation.y);
+    quaternion x = quaternion_from_axis_angle(OY, rotation.x);
+    quaternion y = quaternion_from_axis_angle(OX, rotation.y);
     quaternion z = quaternion_from_axis_angle(OZ, rotation.z);
     return quaternion_normalize(quaternion_multiply(quaternion_multiply(y, x), z));
 }
