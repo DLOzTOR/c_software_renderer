@@ -1,5 +1,6 @@
 out/
 .idea/
+.vscode/
 cmake-build-debug/
 *.tga
 out.txt
